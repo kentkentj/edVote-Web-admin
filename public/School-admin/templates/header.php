@@ -44,8 +44,8 @@
               class="fas fa-globe fa-fw me-3"></i><span>International</span></a>
           <a href="./department" class="list-group-item list-group-item-action py-2 ripple"><i
               class="fas fa-building fa-fw me-3"></i><span>Departments</span></a>
-          <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
-              class="fas fa-calendar fa-fw me-3"></i><span>Calendar</span></a>
+          <a href="./election" class="list-group-item list-group-item-action py-2 ripple"><i
+              class="fas fa-calendar fa-fw me-3"></i><span>Election</span></a>
           <a href="./users" class="list-group-item list-group-item-action py-2 ripple"><i
               class="fas fa-users fa-fw me-3"></i><span>Users</span></a>
           <!--<a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
