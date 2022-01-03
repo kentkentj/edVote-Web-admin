@@ -23,7 +23,7 @@
             <!-- Text input -->
             <div class="form-outline mb-4">
                 <input type="text" id="form6Example3" class="form-control" />
-                <label class="form-label" for="form6Example3">Company name</label>
+                <label class="form-label" for="form6Example3">Student ID</label>
             </div>
 
             <!-- Text input -->
@@ -51,7 +51,7 @@
             </div>
 
             <!-- Checkbox -->
-            <div class="form-check d-flex justify-content-center mb-4">
+            <!--<div class="form-check d-flex justify-content-center mb-4">
                 <input
                 class="form-check-input me-2"
                 type="checkbox"
@@ -60,9 +60,37 @@
                 checked
                 />
                 <label class="form-check-label" for="form6Example8"> Create an account? </label>
+            </div>-->
+            
+             <div class="row mb-4">
+                <div class="col">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Department</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Course</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Year</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
             </div>
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4">Place order</button>
+            <button type="submit" class="btn btn-secondary bg-gradient btn-block mb-4">CREATE USER</button>
         </form>
     </div>
   </main>

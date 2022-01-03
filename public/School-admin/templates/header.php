@@ -28,7 +28,7 @@
           <a href="#" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">
             <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
           </a>
-          <a href="#" class="list-group-item list-group-item-action py-2 ripple active">
+          <a href="#" class="list-group-item list-group-item-action py-2 ripple">
             <i class="fas fa-chart-area fa-fw me-3"></i><span>Webiste traffic </span>
           </a>
           <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
@@ -43,7 +43,7 @@
           <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
               class="fas fa-globe fa-fw me-3"></i><span>International</span></a>
           <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
-              class="fas fa-building fa-fw me-3"></i><span>Partners</span></a>
+              class="fas fa-building fa-fw me-3"></i><span>Departments</span></a>
           <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
               class="fas fa-calendar fa-fw me-3"></i><span>Calendar</span></a>
           <a href="./users.php" class="list-group-item list-group-item-action py-2 ripple"><i
