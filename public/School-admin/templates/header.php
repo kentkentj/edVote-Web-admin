@@ -46,7 +46,7 @@
               class="fas fa-building fa-fw me-3"></i><span>Partners</span></a>
           <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
               class="fas fa-calendar fa-fw me-3"></i><span>Calendar</span></a>
-          <a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
+          <a href="./users.php" class="list-group-item list-group-item-action py-2 ripple"><i
               class="fas fa-users fa-fw me-3"></i><span>Users</span></a>
           <!--<a href="#" class="list-group-item list-group-item-action py-2 ripple"><i
               class="fas fa-money-bill fa-fw me-3"></i><span>Sales</span></a>-->
