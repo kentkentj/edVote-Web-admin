@@ -1,9 +1,42 @@
+<?php
+require "../../config.php";
+require "../../common.php";
+if(isset($_POST["create_department"])){
+	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+	try{
+		$connection = new PDO($dsn, $username, $password, $options);
+
+		$new_user = array(
+            "depatment_name" => $_POST['departmentName'],
+            "depatment_name_abbreviation"  => $_POST['departmentAbbrevation'],
+            "school_id"  => '9234424',
+            "school_name"  => 'UC'
+        );
+
+        $sql = sprintf(
+                "INSERT INTO %s (%s) values (%s)",
+                "depatment_table",
+                implode(", ", array_keys($new_user)),
+                ":" . implode(", :", array_keys($new_user))
+        );
+        
+        $statement = $connection->prepare($sql);
+        $statement->execute($new_user);
+	} catch(PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
+    }
+}
+
+?>*/
 <?php include 'templates/header.php' ?>
 <!--Main layout-->
 <main style="margin-top: 58px">
     <div class="container pt-4 w-50 p-3">
       <!-- Section: Add department -->
       <section class="mb-4">
+      <?php if (isset($_POST['create_department']) && $statement) { ?>
+            <blockquote><?php echo $_POST['departmentName']; ?> successfully added.</blockquote>
+      <?php }?>
         <div class="card">
             <div class="card-header py-3">
                 <h5 class="mb-0 text-center"><strong>Add Department</strong></h5>
@@ -33,6 +66,7 @@
                             </div>
                         </div>
                     </div>
+                    <input name="csrf" type="hidden" value="<?php echo escape($_SESSION['csrf']); ?>">
                 </form>
             </div>
         </div>

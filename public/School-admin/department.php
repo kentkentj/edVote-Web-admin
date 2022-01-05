@@ -1,3 +1,19 @@
+<?php 
+try{
+	require "../../config.php";
+    require "../../common.php";
+	$connection=new PDO($dsn, $username, $password, $options);
+
+	$sql="SELECT * FROM depatment_table";
+
+	$statement = $connection->prepare($sql);
+  	$statement->execute();
+	$result = $statement->fetchAll();
+
+} catch(PDOException $error){
+	echo $sql . "<br>" . $error->getMessage();
+}
+?>
 <?php include 'templates/header.php' ?>
 <!--Main layout-->
 <main style="margin-top: 58px">
@@ -18,28 +34,22 @@
                     <tr>
                         <th scope="col"></th>
                         <th scope="col">Department ID</th>
-                        <th scope="col">Department Name</th>
                         <th scope="col">Department Abbreviation</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
                     <tbody>
+                    <?php foreach ($result as $row) : ?>
                     <tr>
-                        <th scope="row">Department Name</th>
-                        <td>
-                            -48.8%%
-                        </td>
-                        <td>
-                            14.0%
-                        </td>
-                        <td>
-                            14.0%
-                        </td>
+                        <th scope="row"><?php echo escape($row["depatment_name"]); ?></th>
+                        <td><?php echo escape($row["department_id"]); ?></td>
+                        <td><?php echo escape($row["depatment_name_abbreviation"]); ?></td>
                         <td>
                             <a href="#" class="link-danger">Delete</a>
-                            <a href="#" class="link-info ps-2">Update</a>
+                            <a href="<?php echo escape($row["department_id"]); ?>" class="link-info ps-2">Update</a>
                         </td>
                     </tr>
+                    <?php endforeach; ?>
                     </tbody>
                 </table>
                 </div>
