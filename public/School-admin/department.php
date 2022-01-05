@@ -2,28 +2,8 @@
 <!--Main layout-->
 <main style="margin-top: 58px">
     <div class="container pt-4">
-    <!--Section: Sales Performance KPIs-->
-        <button type="button" class="btn btn-secondary btn-rounded mb-4" data-mdb-toggle="modal" data-mdb-target="#exampleModal">ADD DEPARTMENT</button>
-        <!--Add Department-->
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add Department</h5>
-                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">...</div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
-                Close
-                </button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-            </div>
-        </div>
-        </div>
-
+    <!--Section: Department-->
+        <a href="create-department-single" class="btn btn-secondary btn-rounded mb-4">ADD DEPARTMENT</a>
         <section class="mb-4">
             <div class="card">
             <div class="card-header text-center py-3">
@@ -38,7 +18,8 @@
                     <tr>
                         <th scope="col"></th>
                         <th scope="col">Department ID</th>
-                        <th scope="col">Number of Students</th>
+                        <th scope="col">Department Name</th>
+                        <th scope="col">Department Abbreviation</th>
                         <th scope="col">Action</th>
                     </tr>
                     </thead>
@@ -47,6 +28,9 @@
                         <th scope="row">Department Name</th>
                         <td>
                             -48.8%%
+                        </td>
+                        <td>
+                            14.0%
                         </td>
                         <td>
                             14.0%
@@ -62,7 +46,7 @@
             </div>
             </div>
         </section>
-      <!--Section: Sales Performance KPIs-->
+      <!--Section: Department-->
     </div>
   </main>
   <!--Main layout-->
