@@ -1,3 +1,20 @@
+<?php 
+try{
+	require "../../config.php";
+    require "../../common.php";
+	$connection=new PDO($dsn, $username, $password, $options);
+
+	$sql="SELECT * FROM depatment_table";
+
+	$statement = $connection->prepare($sql);
+  	$statement->execute();
+	$result = $statement->fetchAll();
+
+} catch(PDOException $error){
+	echo $sql . "<br>" . $error->getMessage();
+}
+?>
+
 <?php include 'templates/header.php' ?>
 <!--Main layout-->
 <main style="margin-top: 58px">
@@ -65,27 +82,34 @@
              <div class="row mb-4">
                 <div class="col">
                     <select class="form-select" aria-label="Default select example">
-                        <option selected>Department</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option selected disabled>Department</option>
+                        <?php foreach ($result as $row) : ?>
+                            <option value="<?php echo escape($row["depatment_name"]); ?>"><?php echo escape($row["depatment_name"]); ?></option>
+                        <?php endforeach; ?>   
                     </select>
                 </div>
                 <div class="col">
                     <select class="form-select" aria-label="Default select example">
-                        <option selected>Course</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option selected disbaled>Course</option>
+                        <optgroup label="Tertiary">
+                            <option value="BSIT"></option>
+                        </optgroup>
                     </select>
                 </div>
 
                 <div class="col">
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Year</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select class="form-select">
+                        <option selected disabled>Year</option>
+                        <optgroup label="Tertiary">
+                            <option value="firstyear">1st Year</option>
+                            <option value="secondyear">2nd Year</option>
+                            <option value="thirdyear">3rd Year</option>
+                            <option value="fourthyear">4th Year</option>
+                        </optgroup>
+                        <optgroup label="Senior High">
+                            <option value="g12">Grade 12</option>
+                            <option value="g11">Grade 11</option>
+                        </optgroup>
                     </select>
                 </div>
             </div>

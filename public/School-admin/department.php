@@ -1,7 +1,25 @@
-<?php 
+<?php
+require "../../config.php";
+require "../../common.php"; 
+if (isset($_GET["delete"])) {
+    try {
+      $connection = new PDO($dsn, $username, $password, $options);
+  
+      $id = $_GET["delete"];
+  
+      $sql = "DELETE FROM depatment_table WHERE department_id = :delete";
+  
+      $statement = $connection->prepare($sql);
+      $statement->bindValue(':delete', $id);
+      $statement->execute();
+  
+      $success = "User successfully deleted";
+    } catch(PDOException $error) {
+      echo $sql . "<br>" . $error->getMessage();
+    }
+}
+
 try{
-	require "../../config.php";
-    require "../../common.php";
 	$connection=new PDO($dsn, $username, $password, $options);
 
 	$sql="SELECT * FROM depatment_table";
@@ -19,7 +37,7 @@ try{
 <main style="margin-top: 58px">
     <div class="container pt-4">
     <!--Section: Department-->
-        <a href="create-department-single" class="btn btn-secondary btn-rounded mb-4">ADD DEPARTMENT</a>
+        <a href="create-department-single" class="btn btn-secondary btn-rounded mb-4">UPDATE DEPARTMENT</a>
         <section class="mb-4">
             <div class="card">
             <div class="card-header text-center py-3">
@@ -45,8 +63,8 @@ try{
                         <td><?php echo escape($row["department_id"]); ?></td>
                         <td><?php echo escape($row["depatment_name_abbreviation"]); ?></td>
                         <td>
-                            <a href="#" class="link-danger">Delete</a>
-                            <a href="<?php echo escape($row["department_id"]); ?>" class="link-info ps-2">Update</a>
+                            <a href="department?delete=<?php echo escape($row["department_id"]); ?>" class="link-danger">Delete</a>
+                            <a href="updatedepartment?department_id=<?php echo escape($row["department_id"]); ?>" class="link-info ps-2">Update</a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
