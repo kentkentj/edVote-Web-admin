@@ -23,31 +23,43 @@ try{
         <form>
             <!-- 2 column grid layout with text inputs for the first and last names -->
             <div class="row mb-4">
-                <div class="col">
+                <div class="col my-2">
                     <div class="form-outline">
                         <input type="text" id="form6Example1" class="form-control" />
                         <label class="form-label" for="form6Example1">First name</label>
                     </div>
                 </div>
-                <div class="col">
+                <div class="col my-2">
                     <div class="form-outline">
                         <input type="text" id="form6Example2" class="form-control" />
                         <label class="form-label" for="form6Example2">Last name</label>
                     </div>
                 </div>
+                <div class="col my-2">
+                    <div class="form-outline">
+                        <input type="text" id="middleName" class="form-control" />
+                        <label class="form-label" for="middleName">Middle Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-2 my-2">
+                    <div class="form-outline">
+                        <input type="text" id="suffix" class="form-control" />
+                        <label class="form-label" for="suffix">Suffix</label>
+                    </div>
+                </div>
             </div>
 
-            <!-- Text input -->
+            <!-- id input -->
             <div class="form-outline mb-4">
                 <input type="text" id="form6Example3" class="form-control" />
                 <label class="form-label" for="form6Example3">Student ID</label>
             </div>
 
             <!-- Text input -->
-            <div class="form-outline mb-4">
+            <!--<div class="form-outline mb-4">
                 <input type="text" id="form6Example4" class="form-control" />
                 <label class="form-label" for="form6Example4">Address</label>
-            </div>
+            </div>-->
 
             <!-- Email input -->
             <div class="form-outline mb-4">
@@ -62,10 +74,10 @@ try{
             </div>
 
             <!-- Message input -->
-            <div class="form-outline mb-4">
+           <!-- <div class="form-outline mb-4">
                 <textarea class="form-control" id="form6Example7" rows="4"></textarea>
                 <label class="form-label" for="form6Example7">Additional information</label>
-            </div>
+            </div>-->
 
             <!-- Checkbox -->
             <!--<div class="form-check d-flex justify-content-center mb-4">
@@ -92,7 +104,8 @@ try{
                     <select class="form-select" aria-label="Default select example">
                         <option selected disbaled>Course</option>
                         <optgroup label="Tertiary">
-                            <option value="BSIT"></option>
+                            <option value="BSIT">BSIT</option>
+                            <option value="BSIT">BSCS</option>
                         </optgroup>
                     </select>
                 </div>

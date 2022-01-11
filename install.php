@@ -206,21 +206,25 @@
 
                         try {
                             $connection = new PDO("mysql:host=$host", $username, $password, $options);
-                            $sql_dbName = file_get_contents("data/createDb.sql");
-                            $sql_tbDepartment = file_get_contents("data/departmentTable.sql");
-
+                            $sql = array(
+                                "createDb"=>file_get_contents("data/createDb.sql"), 
+                                "createDepartmentTable"=>file_get_contents("data/departmentTable.sql"), 
+                                "createUserTable"=>file_get_contents("data/studentUserTable.sql")
+                            );
+                            $installationSuccess = " created successfully"
                             switch ($dbInstallDropdown) {
                                 case 'createDb':
-                                    $connection->exec($sql_dbName);
-                                    echo "Database created successfully.";
+                                    $connection->exec($sql['createDb']);
+                                    echo "Database" . $installationSuccess;
                                     break;
                                 case 'createDepartmentTable':
-                                    $connection->exec($sql_tbDepartment);
-                                    echo "Table Department created successfully.";
+                                    $connection->exec($sql['createDepartmentTable']);
+                                    echo "Table Department" . $installationSuccess;
                                     break;
     
                                 case 'createUserTable':
-                                    echo 'Install User table';
+                                    $connection->exec($sql['studentUserTable']);
+                                    echo "User table" . $installationSuccess;
                                     break;
                                 default:
                                     echo 'Please Select to Install';
