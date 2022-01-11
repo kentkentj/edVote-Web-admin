@@ -209,9 +209,9 @@
                             $sql = array(
                                 "createDb"=>file_get_contents("data/createDb.sql"), 
                                 "createDepartmentTable"=>file_get_contents("data/departmentTable.sql"), 
-                                "createUserTable"=>file_get_contents("data/studentUserTable.sql")
+                                "studentUserTable"=>file_get_contents("data/studentUserTable.sql")
                             );
-                            $installationSuccess = " created successfully"
+                            $installationSuccess = " created successfully";
                             switch ($dbInstallDropdown) {
                                 case 'createDb':
                                     $connection->exec($sql['createDb']);
@@ -222,7 +222,7 @@
                                     echo "Table Department" . $installationSuccess;
                                     break;
     
-                                case 'createUserTable':
+                                case 'studentUserTable':
                                     $connection->exec($sql['studentUserTable']);
                                     echo "User table" . $installationSuccess;
                                     break;
@@ -240,7 +240,7 @@
 						<option value="" disabled selected></option>
 						<option value="createDb">Install Database</option>
 						<option value="createDepartmentTable">Install Department table</option>
-						<option value="createUserTable">Install User table</option>
+						<option value="studentUserTable">Install Student User table</option>
 					</select>
 					<span class="select-highlight"></span>
 					<span class="select-bar"></span>

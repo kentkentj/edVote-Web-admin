@@ -16,6 +16,8 @@ try{
 ?>
 
 <?php include 'templates/header.php' ?>
+<script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+<script src="js/config.js"></script>
 <!--Main layout-->
 <main style="margin-top: 58px">
     <div class="container pt-4">
@@ -63,8 +65,8 @@ try{
 
             <!-- Email input -->
             <div class="form-outline mb-4">
-                <input type="email" id="form6Example5" class="form-control" />
-                <label class="form-label" for="form6Example5">Email</label>
+                <input type="email" id="email" class="form-control" />
+                <label class="form-label" for="email">Email</label>
             </div>
 
             <!-- Number input -->
@@ -105,7 +107,11 @@ try{
                         <option selected disbaled>Course</option>
                         <optgroup label="Tertiary">
                             <option value="BSIT">BSIT</option>
-                            <option value="BSIT">BSCS</option>
+                            <option value="BSCS">BSCS</option>
+                        </optgroup>
+                        <optgroup label="Senior High">
+                            <option value="ICT11TVL">ICT 11 - TVL</option>
+                            <option value="ICT12TVL">ICT 12 - TVL</option>
                         </optgroup>
                     </select>
                 </div>
