@@ -21,16 +21,28 @@ if(isset($_POST["create_user"])){
 		$connection = new PDO($dsn, $username, $password, $options);
 
 		$new_user = array(
-            "firstname" => $_POST['firstname'],
+            "user_id" => $_POST['user_id'],
+            "student_id"  => $_POST['student_id'],
+            "department_id"       => $_POST['department'],
+            "firstname"  => $_POST['firstname'],
             "lastname"  => $_POST['lastname'],
-            "email"     => $_POST['email'],
-            "age"       => $_POST['age'],
-            "location"  => $_POST['location']
+            "middlename"  => $_POST['middlename'],
+            "suffix"  => $_POST['suffix'],
+            "profile_pic"  => '',
+            "email"  => $_POST['email'],
+            "phonenumber"  => $_POST['number'],
+            "depatment_name"  => $_POST['department'],
+            "department_name_abbreviation"  => $_POST['department'],
+            "school_id"  => 'UC-BCF',
+            "school_name"  => 'University of the Cordilleras',
+            "course"  => $_POST['course'],
+            "year_level"  => $_POST['year'],
+            "account_status"  => 'active'
         );
 
         $sql = sprintf(
                 "INSERT INTO %s (%s) values (%s)",
-                "users",
+                "studentusertable",
                 implode(", ", array_keys($new_user)),
                 ":" . implode(", :", array_keys($new_user))
         );
@@ -51,20 +63,23 @@ if(isset($_POST["create_user"])){
 <main style="margin-top: 58px">
     <div class="container pt-4">
         <h1 class="mb-3">Add New Student User</h1>
-        <div class="toast show fade mx-auto show fade text-white bg-success" id="static-example" role="alert" aria-live="assertive" aria-atomic="true" data-mdb-autohide="false">
-                <div class="toast-header text-white bg-success">
-                    <strong class="me-auto">Success</strong>
-                    <button type="button" class="btn-close btn-close-white btn-exit" data-mdb-dismiss="toast" aria-label="Close"></button>
-                </div>
-            <div class="toast-body"><?php echo $_POST['fname']; ?> successfully added.</div>
-        </div>
+
+        <?php if (isset($_POST['create_user']) && $statement) { ?>
+            <div class="toast show fade mx-auto show fade text-white bg-success" id="static-example" role="alert" aria-live="assertive" aria-atomic="true" data-mdb-autohide="false">
+                    <div class="toast-header text-white bg-success">
+                        <strong class="me-auto">Success</strong>
+                        <button type="button" class="btn-close btn-close-white btn-exit" data-mdb-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                <div class="toast-body"><?php echo $_POST['firstname'] . " " . $_POST['lastname']; ?> successfully added.</div>
+            </div>
+        <?php }?>
         <div id="user_create_info" class="card my-5">
             <div class="card-body">
                 <h5 class="card-title">User Information</h5>
-                <div class="form-outline">
-                    <input disabled type="text" id="user_id" class="form-control" name="firstname" />
-                </div>
-                <form>
+                <form method="POST">
+                    <div class="form-outline" hidden> 
+                        <input type="text" id="user_id" class="form-control" name="user_id" />
+                    </div>
                     <!-- 2 column grid layout with text inputs for the first and last names -->
                     <div class="row mb-4">
                         <div class="col my-2">
@@ -107,7 +122,7 @@ if(isset($_POST["create_user"])){
 
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                        <input type="email" id="email" class="form-control" />
+                        <input type="email" id="email" class="form-control" name="email" />
                         <label class="form-label" for="email">Email</label>
                     </div>
 
@@ -140,7 +155,7 @@ if(isset($_POST["create_user"])){
                             <select class="form-select" aria-label="Default select example" name="department">
                                 <option selected disabled>Department</option>
                                 <?php foreach ($result as $row) : ?>
-                                    <option value="<?php echo escape($row["depatment_name_abbreviation "]); ?>"><?php echo escape($row["depatment_name_abbreviation"]); ?></option>
+                                    <option value="<?php echo escape($row["depatment_name_abbreviation"]); ?>"><?php echo escape($row["depatment_name_abbreviation"]); ?></option>
                                 <?php endforeach; ?>   
                             </select>
                         </div>
@@ -175,7 +190,16 @@ if(isset($_POST["create_user"])){
                         </div>
                     </div>
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-secondary bg-gradient btn-block mb-4" name="create_user">CREATE USER</button>
+                    <div class="row">
+                        <div class="col">
+                            <button type="button" class="btn btn-primary bg-gradient btn-block mb-4" onclick="logout()">BACK</button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-secondary bg-gradient btn-block mb-4" name="create_user">CREATE USER</button>
+                        </div>
+                    </div>
+
+                    <input name="csrf" type="hidden" value="<?php echo escape($_SESSION['csrf']); ?>">
                 </form>
             </div>
         </div>

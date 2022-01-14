@@ -209,7 +209,8 @@
                             $sql = array(
                                 "createDb"=>file_get_contents("data/createDb.sql"), 
                                 "createDepartmentTable"=>file_get_contents("data/departmentTable.sql"), 
-                                "studentUserTable"=>file_get_contents("data/studentUserTable.sql")
+                                "studentUserTable"=>file_get_contents("data/studentUserTable.sql"),
+                                "electionEvent"=>file_get_contents("data/electionEvent.sql")
                             );
                             $installationSuccess = " created successfully";
                             switch ($dbInstallDropdown) {
@@ -226,6 +227,10 @@
                                     $connection->exec($sql['studentUserTable']);
                                     echo "User table" . $installationSuccess;
                                     break;
+                                    case 'electionEvent':
+                                        $connection->exec($sql['electionEvent']);
+                                        echo "Election name table" . $installationSuccess;
+                                        break;
                                 default:
                                     echo 'Please Select to Install';
                                     break;
@@ -241,6 +246,7 @@
 						<option value="createDb">Install Database</option>
 						<option value="createDepartmentTable">Install Department table</option>
 						<option value="studentUserTable">Install Student User table</option>
+                        <option value="electionEvent">Install Election table</option>
 					</select>
 					<span class="select-highlight"></span>
 					<span class="select-bar"></span>
