@@ -1,4 +1,56 @@
+<?php
+require "../../config.php";
+require "../../common.php"; 
+if(isset($_POST["make_election"])){
+	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+	try{
+		$connection = new PDO($dsn, $username, $password, $options);
+
+		$new_election = array(
+            "election_name" => $_POST['election_title'],
+            "start_election_date"  => $_POST['start_date'],
+            "end_election_date"     => $_POST['end_date'],
+            "department_id"       => '1',
+            "depatment_name"  => 'CITCS',
+            "school_id"  => 'UC-BCF',
+            "school_name"  => 'University of the Cordilleras'
+        );
+
+        $sql_electionevent = sprintf(
+                "INSERT INTO %s (%s) values (%s)",
+                "electionevent",
+                implode(", ", array_keys($new_election)),
+                ":" . implode(", :", array_keys($new_election))
+        );
+        
+        $statement = $connection->prepare($sql_electionevent);
+        $statement->execute($new_election);
+	} catch(PDOException $error) {
+        echo $sql_electionevent . "<br>" . $error->getMessage();
+    }
+}
+ 
+try{
+	$connection=new PDO($dsn, $username, $password, $options);
+
+	$sql_read_electionevent="SELECT * FROM electionevent";
+
+	$statement_read = $connection->prepare($sql_read_electionevent);
+  	$statement_read->execute();
+	$result = $statement_read->fetchAll();
+
+} catch(PDOException $error){
+	echo $sql_read_electionevent . "<br>" . $error->getMessage();
+}
+
+?>
 <?php include 'templates/header.php' ?>
+
+<?php 
+    if (isset($_POST['make_election']) && $statement) { 
+      header("Location: edVoteAdmin/public/School-admin/election");
+    }
+?>
 
 <?php 
     //min date
@@ -13,9 +65,10 @@
         <!--Create Election Event-->
         <div class="card">
           <div class="card-body" style="margin:5%;">
+          <form method="POST">
             <h5 class="card-title">TITLE</h5>
             <div class="form-outline">
-              <input type="text" id="title" class="form-control" name="firstname" />
+              <input type="text" id="title" class="form-control" name="election_title" />
               <label class="form-label" for="title">Election Name</label>
             </div>
 
@@ -35,13 +88,16 @@
               </div>
             </div>
 
-            <button class="btn btn-primary btn-rounded w-100 ripple-surface">CREATE ELECTION</button>
+            <button type="submit" name="make_election" class="btn btn-primary btn-rounded w-100 ripple-surface">CREATE ELECTION</button>
+
+            <input name="csrf" type="hidden" value="<?php echo escape($_SESSION['csrf']); ?>">
+          </form>
           </div>
         </div>
         <!--end Create Election Event-->
       </div>
 
-      <div class="col-sm-6 my-4">
+      <div class="col-sm-7 my-4">
         <!--Section: Election Manage KPIs-->
         <section class="mb-4">
           <div class="card">
@@ -56,22 +112,30 @@
                   <thead>
                     <tr>
                       <th scope="col"></th>
-                      <th scope="col">Product Detail Views</th>
-                      <th scope="col">Unique Purchases</th>
-                      <th scope="col">Quantity</th>
-                      <th scope="col">Product Revenue</th>
-                      <th scope="col">Avg. Price</th>
+                      <th scope="col">Start Date</th>
+                      <th scope="col">Due Date</th>
+                      <th scope="col">Department</th>
+                      <th scope="col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
+                  <?php foreach ($result as $row) : ?>
                     <tr>
-                      <th scope="row">Election Name</th>
-                      <td>18,492</td>
-                      <td>228</td>
-                      <td>350</td>
-                      <td>$4,787.64</td>
-                      <td>$13.68</td>
+                      <th scope="row"><?php echo escape($row["election_name"]); ?></th>
+                      <td><?php echo escape($row["start_election_date"]); ?></td>
+                      <td><?php echo escape($row["end_election_date"]); ?></td>
+                      <td><?php echo escape($row["depatment_name"]); ?></td>
+                      <td>
+                        <a class="btn btn-danger"  href="#!" role="button">
+                          <i class="far fa-trash-alt"></i>
+                        </a>
+
+                        <a class="btn btn-primary" href="#!" role="button">
+                          <i class="far fa-edit"></i>
+                        </a>
+                      </td>
                     </tr>
+                  <?php endforeach; ?>
                   </tbody>
                 </table>
               </div>
