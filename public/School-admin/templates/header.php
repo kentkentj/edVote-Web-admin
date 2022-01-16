@@ -66,7 +66,7 @@
         </button>
 
         <!-- Brand -->
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/edVoteAdmin/public/School-admin/">
           <img src="img/logo.png" height="35" alt="" loading="lazy" />
         </a>
         <!-- Search form -->
