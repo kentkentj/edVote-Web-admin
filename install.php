@@ -210,7 +210,8 @@
                                 "createDb"=>file_get_contents("data/createDb.sql"), 
                                 "createDepartmentTable"=>file_get_contents("data/departmentTable.sql"), 
                                 "studentUserTable"=>file_get_contents("data/studentUserTable.sql"),
-                                "electionEvent"=>file_get_contents("data/electionEvent.sql")
+                                "electionEvent"=>file_get_contents("data/electionEvent.sql"),
+                                "positionTable"=>file_get_contents("data/positionTable.sql")
                             );
                             $installationSuccess = " created successfully";
                             switch ($dbInstallDropdown) {
@@ -227,10 +228,14 @@
                                     $connection->exec($sql['studentUserTable']);
                                     echo "User table" . $installationSuccess;
                                     break;
-                                    case 'electionEvent':
-                                        $connection->exec($sql['electionEvent']);
-                                        echo "Election name table" . $installationSuccess;
-                                        break;
+                                case 'electionEvent':
+                                    $connection->exec($sql['electionEvent']);
+                                    echo "Election event table" . $installationSuccess;
+                                    break;
+                                case 'positionTable':
+                                    $connection->exec($sql['positionTable']);
+                                    echo "Position table" . $installationSuccess;
+                                    break;
                                 default:
                                     echo 'Please Select to Install';
                                     break;
@@ -247,6 +252,7 @@
 						<option value="createDepartmentTable">Install Department table</option>
 						<option value="studentUserTable">Install Student User table</option>
                         <option value="electionEvent">Install Election table</option>
+                        <option value="positionTable">Install Position table</option>
 					</select>
 					<span class="select-highlight"></span>
 					<span class="select-bar"></span>
