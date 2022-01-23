@@ -71,11 +71,11 @@
           <img src="img/logo.png" height="35" alt="" loading="lazy" />
         </a>
         <!-- Search form -->
-        <form class="d-none d-md-flex input-group w-auto my-auto">
+        <!---<form class="d-none d-md-flex input-group w-auto my-auto">
           <input autocomplete="off" type="search" class="form-control rounded"
             placeholder='Search (ctrl + "/" to focus)' style="min-width: 225px" />
           <span class="input-group-text border-0"><i class="fas fa-search"></i></span>
-        </form>
+        </form>-->
 
         <!-- Right links -->
         <ul class="navbar-nav ms-auto d-flex flex-row">
@@ -96,20 +96,20 @@
           </li>
 
           <!-- Icon -->
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <a class="nav-link me-3 me-lg-0" href="#">
               <i class="fas fa-fill-drip"></i>
             </a>
-          </li>
+          </li>-->
           <!-- Icon -->
-          <li class="nav-item me-3 me-lg-0">
+          <!--<li class="nav-item me-3 me-lg-0">
             <a class="nav-link" href="#">
               <i class="fab fa-github"></i>
             </a>
-          </li>
+          </li>-->
 
           <!-- Icon dropdown -->
-          <li class="nav-item dropdown">
+          <!--<li class="nav-item dropdown">
             <a class="nav-link me-3 me-lg-0 dropdown-toggle hidden-arrow" href="#" id="navbarDropdown" role="button"
               data-mdb-toggle="dropdown" aria-expanded="false">
               <i class="united kingdom flag m-0"></i>
@@ -147,7 +147,7 @@
                 <a class="dropdown-item" href="#"><i class="portugal flag"></i>Português</a>
               </li>
             </ul>
-          </li>
+          </li>-->
 
           <!-- Avatar -->
           <li class="nav-item dropdown">
