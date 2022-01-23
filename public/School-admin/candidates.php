@@ -2,15 +2,15 @@
 require "../../config.php";
 require "../../common.php"; 
 
-if (isset($_GET['id']))
+if (isset($_GET['electionid']))
 {
     try
     {
         $connection = new PDO($dsn, $username, $password, $options);
-        $id = $_GET['id'];
-        $sql = "SELECT * FROM users WHERE id = :id";
+        $id = $_GET['electionid'];
+        $sql = "SELECT election_id FROM electionevent WHERE election_id  = :electionid";
         $statement = $connection->prepare($sql);
-        $statement->bindValue(':id', $id);
+        $statement->bindValue(':electionid', $id);
         $statement->execute();
         $user = $statement->fetch(PDO::FETCH_ASSOC);
     }
@@ -25,56 +25,97 @@ else
     exit;
 }
 ?>
+
+<?php 
+try{
+	$connection=new PDO($dsn, $username, $password, $options);
+
+	$sql="SELECT position_id,position_name FROM positiontable WHERE school_id = 'UC-BCF'";
+
+	$statement = $connection->prepare($sql);
+  $statement->execute();
+	$position_result = $statement->fetchAll();
+
+} catch(PDOException $error){
+	echo $sql . "<br>" . $error->getMessage();
+}
+?>
+
+<?php
+if(isset($_POST["done"])){
+	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+	try{
+		$connection = new PDO($dsn, $username, $password, $options);
+
+		$new_user = array(
+            "school_id" => 'UC-BCF',
+            "election_id" => implode("|",$user),
+            "department_id" => '1',
+            "candidate_name" => $_POST['candidate_name'],
+            "candidate_party" => $_POST['party'],
+            "candidate_position" => $_POST['position'],
+            "profile_pic" => ''
+        );
+
+        $sql = sprintf(
+                "INSERT INTO %s (%s) values (%s)",
+                "electionevent",
+                implode(", ", array_keys($new_user)),
+                ":" . implode(", :", array_keys($new_user))
+        );
+        
+        $statement = $connection->prepare($sql);
+        $statement->execute($new_user);
+	} catch(PDOException $error) {
+        echo $sql . "<br>" . $error->getMessage();
+    }
+}
+?>
 <?php include 'templates/header.php' ?>
 <!--Main layout-->
 <main style="margin-top: 58px">
     <div class="container pt-4 w-50 my-5">
-        <!--<form method="post" action="store_detail.php">
-      <table id="employee_table" align=center>
-      <tr id="row1">
-        <td><input type="text" name="name[]" placeholder="Enter Name"></td>
-        <td><input type="text" name="age[]" placeholder="Enter Age"></td>
-        <td><input type="text" name="job[]" placeholder="Enter Job"></td>
-      </tr>
-      </table>
-      <input type="button" onclick="add_row();" value="ADD ROW">
-      <input type="submit" name="submit_row" value="SUBMIT">
-    </form>-->
       <div id="row1" class="card">
             <div class="container pt-2 w-75 my-5">
               <h2 class="mb-0 text-center">
                 <strong>Candidate</strong>
               </h2>
-              <div class="container my-4">
-                <div class="form-outline mb-4">
-                  <input id="candidate-name" type="text" class="form-control" name="" value=""/>
-                  <label class="form-label" for="candidate-name" ?>Candidate Name</label>
+              <form method="POST">
+                <div class="container my-4">
+                  <?php /*echo implode("|",$user);*/ ?>
+                  <div class="form-outline mb-4">
+                    <input id="candidate-name" type="text" class="form-control" name="candidate_name" />
+                    <label class="form-label" for="candidate-name">Candidate Name</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input id="party" type="text" class="form-control" name="party" />
+                    <label class="form-label" for="party-name">Party</label>
+                  </div>
+
+                  <select class="form-select" name="position">
+                    <?php foreach ($position_result as $row) : ?>
+                      <option value="<?php echo escape($row["position_id"]); ?>"><?php echo escape($row["position_name"]); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+
+                  <!-- Upload image input-->
+                  <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm my-5">
+                      <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0" name="upload_profile">
+                      <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
+                      <div class="input-group-append">
+                          <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
+                      </div>
+                  </div>
+
+                  <!-- Uploaded image area-->
+                  <p class="font-italic text-white text-center">The image uploaded will be rendered inside the box below.</p>
+                  <div class="image-area mt-4"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block" style="width:300px;"></div>
+
+                  <button type="submit" class="btn btn-primary w-100" name="done">Done</button>
+                  <input name="csrf" type="hidden" value="<?php echo escape($_SESSION['csrf']); ?>">
                 </div>
-
-                <div class="form-outline mb-4">
-                  <input id="party" type="text" class="form-control" name="" value=""/>
-                  <label class="form-label" for="party-name" ?>Party</label>
-                </div>
-
-                <select class="form-select" name="year">
-                  <option value="">President</option>
-                </select>
-
-                <!-- Upload image input-->
-                <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm my-5">
-                    <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0">
-                    <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label>
-                    <div class="input-group-append">
-                        <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
-                    </div>
-                </div>
-
-                <!-- Uploaded image area-->
-                <p class="font-italic text-white text-center">The image uploaded will be rendered inside the box below.</p>
-                <div class="image-area mt-4"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block" style="width:300px;"></div>
-
-                <button type="button" class="btn btn-primary w-100">Done</button>
-              </div>
+              </form>
             </div>
        </div>
     </div>
