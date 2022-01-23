@@ -1,50 +1,31 @@
+<?php 
+require "../../config.php";
+require "../../common.php"; 
+
+if (isset($_GET['id']))
+{
+    try
+    {
+        $connection = new PDO($dsn, $username, $password, $options);
+        $id = $_GET['id'];
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+    }
+    catch(PDOException $error)
+    {
+        echo $sql . "<br>" . $error->getMessage();
+    }
+}
+else
+{
+    echo "Something went wrong!";
+    exit;
+}
+?>
 <?php include 'templates/header.php' ?>
-<script type="text/javascript">
-  function add_row()
-  {
-  $rowno=$("#employee_table tr").length;
-  $rowno=$rowno+1;
-  $("#employee_table tr:last").after("<div id=" +$rowno +" class="card"> <div class="container pt-2 w-75 my-5"> <h2 class="mb-0 text-center"> <strong>Candidate</strong> </h2> <div class="container my-4"> <div class="form-outline mb-4"> <input id="candidate-name" type="text" class="form-control" name="" value=""/> <label class="form-label" for="candidate-name" ?>Candidate Name</label> </div> <div class="form-outline mb-4"> <input id="party" type="text" class="form-control" name="" value=""/> <label class="form-label" for="party-name" ?>Party</label> </div> <select class="form-select" name="year"> <option value="">President</option> </select> <!-- Upload image input--> <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm my-5"> <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0"> <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose file</label> <div class="input-group-append"> <label for="upload" class="btn btn-light m-0 rounded-pill px-4"> <i class="fa fa-cloud-upload mr-2 text-muted"></i><small class="text-uppercase font-weight-bold text-muted">Choose file</small></label> </div> </div> <!-- Uploaded image area--> <p class="font-italic text-white text-center">The image uploaded will be rendered inside the box below.</p> <div class="image-area mt-4"><img id="imageResult" src="#" alt="" class="img-fluid rounded shadow-sm mx-auto d-block" style="width:300px;"></div> <div class="row"> <div class="col my-2"> <button type="button" class="btn btn-outline-danger"> <i class="fas fa-times"></i> </button> </div> <div class="col my-2"> <button type="button" class="btn btn-primary w-100">Done</button> </div> <div class="col my-2"> <button type="button" class="btn btn-secondary w-100" onclick="add_row();">Add Candidate</button> </div> </div> </div> </div> </div>");
-  }
-  function delete_row(rowno)
-  {
-  $('#'+rowno).remove();
-  }
-
-  /*  ==========================================
-      SHOW UPLOADED IMAGE
-  * ========================================== */
-  function readURL(input) {
-      if (input.files && input.files[0]) {
-          var reader = new FileReader();
-
-          reader.onload = function (e) {
-              $('#imageResult')
-                  .attr('src', e.target.result);
-          };
-          reader.readAsDataURL(input.files[0]);
-      }
-  }
-
-  $(function () {
-      $('#upload').on('change', function () {
-          readURL(input);
-      });
-  });
-
-  /*  ==========================================
-      SHOW UPLOADED IMAGE NAME
-  * ========================================== */
-  var input = document.getElementById( 'upload' );
-  var infoArea = document.getElementById( 'upload-label' );
-
-  input.addEventListener( 'change', showFileName );
-  function showFileName( event ) {
-    var input = event.srcElement;
-    var fileName = input.files[0].name;
-    infoArea.textContent = 'File name: ' + fileName;
-  }
-</script>
 <!--Main layout-->
 <main style="margin-top: 58px">
     <div class="container pt-4 w-50 my-5">

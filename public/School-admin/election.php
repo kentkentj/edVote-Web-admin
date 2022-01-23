@@ -162,7 +162,7 @@ try{
                           <i class="far fa-trash-alt"></i>
                         </a>
 
-                        <a class="btn btn-primary" href="candidates" role="button">
+                        <a class="btn btn-primary" href="candidates?electionid=<?php echo escape($row["depatment_name"]); ?>" role="button">
                           <i class="far fa-edit"></i>
                         </a>
                       </td>
