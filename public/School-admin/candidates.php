@@ -34,7 +34,7 @@ try{
 
 	$statement = $connection->prepare($sql);
   $statement->execute();
-	$position_result = $statement->fetchAll();
+	$position_list = $statement->fetchAll();
 
 } catch(PDOException $error){
 	echo $sql . "<br>" . $error->getMessage();
@@ -45,33 +45,101 @@ try{
 if(isset($_POST["done"])){
 	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
 	try{
+
+    // File upload path
+    $targetDir = "uploads/profile/";
+    $fileName = basename($_FILES["upload_profile"]["name"]);
+    $targetFilePath = $targetDir . $fileName;
+    $fileType = pathinfo($targetFilePath,PATHINFO_EXTENSION);
 		$connection = new PDO($dsn, $username, $password, $options);
 
-		$new_user = array(
-            "school_id" => 'UC-BCF',
-            "election_id" => implode("|",$user),
-            "department_id" => '1',
-            "candidate_name" => $_POST['candidate_name'],
-            "candidate_party" => $_POST['party'],
-            "candidate_position" => $_POST['position'],
-            "profile_pic" => ''
-        );
+        $allowTypes = array('jpg','png','jpeg','gif');
+        if(in_array($fileType, $allowTypes)){
+            // Upload file to server
+            if(move_uploaded_file($_FILES["upload_profile"]["tmp_name"], $targetFilePath)){
+                // Insert image file name into database
+                $new_user = array(
+                    "school_id" => 'UC-BCF',
+                    "election_id" => implode("|",$user),
+                    "department_id" => '1',
+                    "candidate_name" => $_POST['candidate_name'],
+                    "candidate_party" => $_POST['party'],
+                    "candidate_position" => $_POST['position'],
+                    "profile_pic" => $fileName
+                );
 
-        $sql = sprintf(
-                "INSERT INTO %s (%s) values (%s)",
-                "electionevent",
-                implode(", ", array_keys($new_user)),
-                ":" . implode(", :", array_keys($new_user))
-        );
-        
-        $statement = $connection->prepare($sql);
-        $statement->execute($new_user);
+                $sql_insert_candidate = sprintf(
+                        "INSERT INTO %s (%s) values (%s)",
+                        "candidatetable",
+                        implode(", ", array_keys($new_user)),
+                        ":" . implode(", :", array_keys($new_user))
+                );
+                
+                $statement = $connection->prepare($sql_insert_candidate);
+                $statement->execute($new_user); 
+            }else{
+                $statusMsg = "Sorry, there was an error uploading your file.";
+            }
+        }else{
+            $statusMsg = 'Sorry, only JPG, JPEG, PNG, GIF, & PDF files are allowed to upload.';
+        }
 	} catch(PDOException $error) {
-        echo $sql . "<br>" . $error->getMessage();
+        echo $sql_insert_candidate . "<br>" . $error->getMessage();
     }
 }
 ?>
+
+<?php 
+try{
+	$connection=new PDO($dsn, $username, $password, $options);
+
+	$sql="SELECT * FROM candidatetable WHERE school_id = 'UC-BCF' AND election_id = '1'";
+
+	$statement = $connection->prepare($sql);
+  $statement->execute();
+	$position_result = $statement->fetchAll();
+
+} catch(PDOException $error){
+	echo $sql . "<br>" . $error->getMessage();
+}
+?>
 <?php include 'templates/header.php' ?>
+<script>
+/*  ==========================================
+    SHOW UPLOADED IMAGE
+* ========================================== */
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#imageResult')
+                .attr('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$(function () {
+    $('#upload').on('change', function () {
+        readURL(input);
+    });
+});
+
+/*  ==========================================
+    SHOW UPLOADED IMAGE NAME
+* ========================================== */
+var input = document.getElementById( 'upload' );
+var infoArea = document.getElementById( 'upload-label' );
+
+input.addEventListener( 'change', showFileName );
+function showFileName( event ) {
+  var input = event.srcElement;
+  var fileName = input.files[0].name;
+  infoArea.textContent = 'File name: ' + fileName;
+}
+</script>
+
 <!--Main layout-->
 <main style="margin-top: 58px">
     <div class="container pt-4 w-50 my-5">
@@ -80,7 +148,7 @@ if(isset($_POST["done"])){
               <h2 class="mb-0 text-center">
                 <strong>Candidate</strong>
               </h2>
-              <form method="POST">
+              <form method="POST" enctype="multipart/form-data">
                 <div class="container my-4">
                   <?php /*echo implode("|",$user);*/ ?>
                   <div class="form-outline mb-4">
@@ -94,8 +162,8 @@ if(isset($_POST["done"])){
                   </div>
 
                   <select class="form-select" name="position">
-                    <?php foreach ($position_result as $row) : ?>
-                      <option value="<?php echo escape($row["position_id"]); ?>"><?php echo escape($row["position_name"]); ?></option>
+                    <?php foreach ($position_list as $row) : ?>
+                      <option value="<?php echo escape($row["position_name"]); ?>"><?php echo escape($row["position_name"]); ?></option>
                     <?php endforeach; ?>
                   </select>
 
@@ -122,23 +190,24 @@ if(isset($_POST["done"])){
     
     <div class="container pt-2 my-5">
         <div class="row">
+        <?php foreach ($position_result as $row) : ?>
           <div class="col">
               <div class="card">
                  <div class="row" style="padding:20px;">
                    <div class="col-sm-3">
-                      <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="80"
+                      <img src="uploads/profile/<?php echo escape($row["profile_pic"]); ?>" class="rounded-circle" height="80"
                 alt="" loading="lazy" />
                    </div>
 
                    <div class="col-8">
-                     <strong class="fw-normal">Candidate Name</strong><br>
-                     <strong class="fw-lighter">Party</strong><br>
-                     <strong class="fw-bolder">President</strong><br>
+                     <strong class="fw-normal"><?php echo escape($row["candidate_name"]); ?></strong><br>
+                     <strong class="fw-lighter"><?php echo escape($row["candidate_party"]); ?></strong><br>
+                     <strong class="fw-bolder"><?php echo escape($row["candidate_position"]); ?></strong><br>
                    </div>
                  </div>
               </div>
            </div>
-           
+        <?php endforeach; ?> 
         </div>
     </div>
 </main>
