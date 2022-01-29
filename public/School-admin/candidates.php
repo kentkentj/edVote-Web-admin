@@ -191,21 +191,6 @@ function showFileName( event ) {
     <div class="container pt-2 my-5">
        <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-4">
         <?php foreach ($position_result as $row) : ?>
-          <!--<div class="col-md-4 my-2">
-              <div class="card">
-                 <div class="row" style="padding:20px;">
-                   <div class="col-sm-4">
-                      <img src="uploads/profile/<?php echo escape($row["profile_pic"]); ?>" class="rounded-circle" alt="" loading="lazy" height="100" width="100"  />
-                   </div>
-
-                   <div class="col-8">
-                     <strong class="fw-normal"><?php echo escape($row["candidate_name"]); ?></strong><br>
-                     <strong class="fw-lighter"><?php echo escape($row["candidate_party"]); ?></strong><br>
-                     <strong class="fw-bolder"><?php echo escape($row["candidate_position"]); ?></strong><br>
-                   </div>
-                 </div>
-              </div>
-           </div>-->
            <div class="col my-3">
               <div class="card radius-15">
                 <div class="card-body text-center">
@@ -219,7 +204,7 @@ function showFileName( event ) {
                       <a href="javascript:;" class="list-inline-item bg-linkedin text-white border-0"><i class="bx bxl-linkedin"></i></a>
                     </div>
                     <div class="d-grid">
-                      <a href="#" class="btn btn-outline-primary radius-15">View</a>
+                      <a href="candidate_info?candidate_id=<?php echo escape($row["candidate_id"]); ?>" class="btn btn-outline-primary radius-15">View</a>
                     </div>
                   </div>
                 </div>
