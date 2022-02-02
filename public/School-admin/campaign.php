@@ -1,3 +1,19 @@
+<?php 
+try{
+	require "../../config.php";
+    require "../../common.php"; 
+	$connection=new PDO($dsn, $username, $password, $options);
+
+	$sql="SELECT * FROM candidatetable";
+
+	$statement = $connection->prepare($sql);
+  	$statement->execute();
+	$result_candidates = $statement->fetchAll();
+
+} catch(PDOException $error){
+	echo $sql . "<br>" . $error->getMessage();
+}
+?>
 <?php include 'templates/header.php' ?>
 <script src="js/upload-image.js"></script>
 <!--Main layout-->
@@ -45,11 +61,40 @@
                     <div class="card-body">
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+                                <!--Text Area-->
                                 <div class="form-group">
                                     <label class="sr-only" for="message">post</label>
                                     <textarea class="form-control" id="message" rows="3" placeholder="What are you thinking?"></textarea>
                                 </div>
-
+                                
+                                <div class="row my-1">
+                                    <div class="col my-1">
+                                        <select class="form-select" name="position" style="height:37px;">
+                                            <option disabled selected>Select Candidate</option>
+                                            <?php foreach ($result_candidates as $row) : ?>
+                                                <option value="<?php echo escape($row["election_id"]);?>,<?php echo escape($row["school_id"]);?>,<?php echo escape($row["department_id"]);?>,<?php echo escape($row["candidate_name"]);?>,<?php echo escape($row["candidate_position"]);?>,<?php echo escape($row["profile_pic"]);?>">
+                                                    <?php echo escape($row["candidate_name"]); ?> -
+                                                    <?php echo escape($row["candidate_party"]); ?> -
+                                                    <?php echo escape($row["candidate_position"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col my-1">
+                                        <!--<div class="form-outline mb-4">
+                                            <input id="party" type="text" class="form-control" name="party" />
+                                            <label class="form-label" for="party-name">Party</label>
+                                        </div>-->
+                                        <select class="form-select" name="position" style="height:37px;">
+                                            <option disabled selected>Select Party</option>
+                                            <?php foreach ($result_candidates as $row) : ?>
+                                                <option value="<?php echo escape($row["candidate_party"]);?> <?php escape($row["candidate_name"]); ?>">
+                                                    <?php echo escape($row["candidate_party"]); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
                                 <div class="form-group">
@@ -72,7 +117,7 @@
                         </div>
                         <div class="btn-toolbar justify-content-between my-2">
                             <div class="btn-group">
-                                <button type="submit" class="btn btn-primary">share</button>
+                                <button type="submit" class="btn btn-primary">post</button>
                             </div>
                             <div class="btn-group">
                                 <button id="btnGroupDrop1" type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -105,8 +150,8 @@
                             </div>
                             <div>
                                 <div class="dropdown">
-                                    <button class="btn btn-link dropdown-toggle" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fa fa-ellipsis-h"></i>
+                                    <button class="btn btn-link" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="far fa-trash-alt text-danger"></i>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
                                         <div class="h6 dropdown-header">Configuration</div>
@@ -124,11 +169,12 @@
                         <a class="card-link" href="#">
                             <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
                         </a>
-
+                        
                         <p class="card-text">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
                             sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
                         </p>
+                        <img src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp" class="img-fluid rounded" alt="Wild Landscape" />
                     </div>
                     <div class="card-footer">
                         <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
