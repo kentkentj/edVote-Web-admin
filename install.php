@@ -212,7 +212,8 @@
                                 "studentUserTable"=>file_get_contents("data/studentUserTable.sql"),
                                 "electionEvent"=>file_get_contents("data/electionEvent.sql"),
                                 "positionTable"=>file_get_contents("data/positionTable.sql"),
-                                "candidateTable"=>file_get_contents("data/candidateTable.sql")
+                                "candidateTable"=>file_get_contents("data/candidateTable.sql"),
+                                "campaignTable"=>file_get_contents("data/campaignTable.sql")
                             );
                             $installationSuccess = " created successfully";
                             switch ($dbInstallDropdown) {
@@ -241,7 +242,10 @@
                                     $connection->exec($sql['candidateTable']);
                                     echo "Candidate table" . $installationSuccess;
                                     break;
-                                    
+                                case 'campaignTable':
+                                    $connection->exec($sql['campaignTable']);
+                                    echo "Campaign Ads table" . $installationSuccess;
+                                    break;    
                                 default:
                                     echo 'Please Select to Install';
                                     break;
@@ -260,6 +264,8 @@
                         <option value="electionEvent">Install Election table</option>
                         <option value="positionTable">Install Position table</option>
                         <option value="candidateTable">Install Candidates table</option>
+                        <option value="campaignTable">Install Campaign table</option>
+                        
 					</select>
 					<span class="select-highlight"></span>
 					<span class="select-bar"></span>

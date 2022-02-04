@@ -9,8 +9,8 @@ CREATE TABLE campaignTable (
     candidate_party VARCHAR(30) NOT NULL,
     candidate_position VARCHAR(30) NOT NULL,
     profile_pic VARCHAR(100) NOT NULL,
-    caption varchar(max) NOT NULL,
-    varchar(max) NOT NULL,
+    campaign_post_title VARCHAR(30) NOT NULL, 
+    caption TEXT NOT NULL,
     date TIMESTAMP,	
-    images VARCHAR(100) NOT NULL,
+    images VARCHAR(100) NOT NULL
 );
