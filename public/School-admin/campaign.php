@@ -15,6 +15,21 @@ try{
 }
 ?>
 
+<?php 
+try{
+	$connection=new PDO($dsn, $username, $password, $options);
+
+	$sql="SELECT * FROM campaigntable ORDER BY campaign_id DESC";
+
+	$statement = $connection->prepare($sql);
+  	$statement->execute();
+	$result_campaign_list = $statement->fetchAll();
+
+} catch(PDOException $error){
+	echo $sql . "<br>" . $error->getMessage();
+}
+?>
+
 <?php
 if(isset($_POST["post_campaign"])){
 	if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
@@ -40,7 +55,7 @@ if(isset($_POST["post_campaign"])){
                     "school_id" => $candidate_info[1], 
                     "department_id" => $candidate_info[2],
                     "candidate_name" => $candidate_info[3],
-                    "candidate_party" => $_POST['party'],
+                    "candidate_party" => $candidate_info[6],
                     "candidate_position" => $candidate_info[4],
                     "profile_pic" => $candidate_info[5],
                     "campaign_post_title" => $_POST['campaign_title'], 
@@ -78,6 +93,7 @@ if(isset($_POST["post_campaign"])){
     <div class="container-fluid gedf-wrapper">
         <div class="row">
             <div class="col-md-3">
+                <p>Upcomming elections</p>
                 <div class="card">
                     <div class="card-body">
                         <div class="h5">@LeeCross</div>
@@ -136,7 +152,7 @@ if(isset($_POST["post_campaign"])){
                                             <select class="form-select" name="candidate" style="height:37px;">
                                                 <option disabled selected>Select Candidate</option>
                                                 <?php foreach ($result_candidates as $row) : ?>
-                                                    <option value="<?php echo escape($row["election_id"]);?>,<?php echo escape($row["school_id"]);?>,<?php echo escape($row["department_id"]);?>,<?php echo escape($row["candidate_name"]);?>,<?php echo escape($row["candidate_position"]);?>,<?php echo escape($row["profile_pic"]);?>">
+                                                    <option value="<?php echo escape($row["election_id"]);?>,<?php echo escape($row["school_id"]);?>,<?php echo escape($row["department_id"]);?>,<?php echo escape($row["candidate_name"]);?>,<?php echo escape($row["candidate_position"]);?>,<?php echo escape($row["profile_pic"]);?>,<?php echo escape($row["candidate_position"]); ?>">
                                                         <?php echo escape($row["candidate_name"]); ?> -
                                                         <?php echo escape($row["candidate_party"]); ?> -
                                                         <?php echo escape($row["candidate_position"]); ?>
@@ -144,11 +160,7 @@ if(isset($_POST["post_campaign"])){
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-                                        <div class="col my-1">
-                                            <!--<div class="form-outline mb-4">
-                                                <input id="party" type="text" class="form-control" name="party" />
-                                                <label class="form-label" for="party-name">Party</label>
-                                            </div>-->
+                                        <!--<div class="col my-1">
                                             <select class="form-select" name="party" style="height:37px;">
                                                 <option disabled selected>Select Party</option>
                                                 <?php foreach ($result_candidates as $row) : ?>
@@ -157,7 +169,7 @@ if(isset($_POST["post_campaign"])){
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>
-                                        </div>
+                                        </div>-->
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="images" role="tabpanel" aria-labelledby="images-tab">
@@ -202,52 +214,53 @@ if(isset($_POST["post_campaign"])){
                 <!-- Post /////-->
 
                 <!--- \\\\\\\Post-->
-                <div class="card gedf-card my-4">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
+                <?php foreach ($result_campaign_list as $row) : ?>
+                    <div class="card gedf-card my-4">
+                        <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
-                                <div class="mr-2">
-                                    <img class="rounded-circle" width="45" src="https://picsum.photos/50/50" alt="">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="mr-2">
+                                        <img class="rounded-circle" width="45" src="uploads/profile/<?php echo escape($row["profile_pic"]); ?>" alt="">
+                                    </div>
+                                    <div class="ml-2">
+                                        <div class="h5 m-0">@<?php echo escape($row["candidate_name"]); ?></div>
+                                        <div class="h7 text-muted"><?php echo escape($row["candidate_party"]); ?></div>
+                                    </div>
                                 </div>
-                                <div class="ml-2">
-                                    <div class="h5 m-0">@LeeCross</div>
-                                    <div class="h7 text-muted">Miracles Lee Cross</div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="dropdown">
-                                    <button class="btn btn-link" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="far fa-trash-alt text-danger"></i>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
-                                        <div class="h6 dropdown-header">Configuration</div>
-                                        <a class="dropdown-item" href="#">Save</a>
-                                        <a class="dropdown-item" href="#">Hide</a>
-                                        <a class="dropdown-item" href="#">Report</a>
+                                <div>
+                                    <div class="dropdown">
+                                        <button class="btn btn-link" type="button" id="gedf-drop1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="far fa-trash-alt text-danger"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="gedf-drop1">
+                                            <div class="h6 dropdown-header">Configuration</div>
+                                            <a class="dropdown-item" href="#">Save</a>
+                                            <a class="dropdown-item" href="#">Hide</a>
+                                            <a class="dropdown-item" href="#">Report</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
+                        <div class="card-body">
+                            <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
+                            <a class="card-link" href="#">
+                                <h5 class="card-title"><?php echo escape($row["campaign_post_title"]); ?></h5>
+                            </a>
+                            
+                            <p class="card-text">
+                                <?php echo escape($row["caption"]); ?>
+                            </p>
+                            <img src="uploads/post/<?php echo escape($row["images"]); ?>" class="img-fluid rounded" alt="Wild Landscape" />
+                        </div>
+                        <!--<div class="card-footer">
+                            <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
+                            <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
+                            <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
+                        </div>-->
                     </div>
-                    <div class="card-body">
-                        <div class="text-muted h7 mb-2"> <i class="fa fa-clock-o"></i>10 min ago</div>
-                        <a class="card-link" href="#">
-                            <h5 class="card-title">Lorem ipsum dolor sit amet, consectetur adip.</h5>
-                        </a>
-                        
-                        <p class="card-text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo recusandae nulla rem eos ipsa praesentium esse magnam nemo dolor
-                            sequi fuga quia quaerat cum, obcaecati hic, molestias minima iste voluptates.
-                        </p>
-                        <img src="https://mdbcdn.b-cdn.net/img/new/slides/041.webp" class="img-fluid rounded" alt="Wild Landscape" />
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>
-                        <a href="#" class="card-link"><i class="fa fa-comment"></i> Comment</a>
-                        <a href="#" class="card-link"><i class="fa fa-mail-forward"></i> Share</a>
-                    </div>
-                </div>
+                <?php endforeach; ?>
                 <!-- Post /////-->
             </div>
             <div class="col-md-3">
