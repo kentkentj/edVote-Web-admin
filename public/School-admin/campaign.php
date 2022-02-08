@@ -196,7 +196,7 @@ if(isset($_POST["post_campaign"])){
                                     <button type="submit" class="btn btn-primary" name="post_campaign">post</button>
                                 </div>
                                 <div class="btn-group">
-                                    <button id="btnGroupDrop1" type="submit" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                    <!--<button id="btnGroupDrop1" type="submit" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="false">
                                         <i class="fa fa-globe"></i>
                                     </button>
@@ -204,7 +204,7 @@ if(isset($_POST["post_campaign"])){
                                         <a class="dropdown-item" href="#"><i class="fa fa-globe"></i> Public</a>
                                         <a class="dropdown-item" href="#"><i class="fa fa-users"></i> Friends</a>
                                         <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Just me</a>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
