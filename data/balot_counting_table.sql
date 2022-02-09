@@ -8,5 +8,6 @@ CREATE TABLE balot_counting_table (
     candidate_id VARCHAR(30) NOT NULL,
     candidate_name VARCHAR(30) NOT NULL,
     candidate_party VARCHAR(30) NOT NULL,
-    candidate_position VARCHAR(30) NOT NULL
+    candidate_position VARCHAR(30) NOT NULL,
+    position_id VARCHAR(30) NOT NULL
 );
