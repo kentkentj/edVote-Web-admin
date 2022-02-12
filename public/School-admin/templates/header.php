@@ -1,3 +1,11 @@
+<?php 
+  session_start();
+  if(isset($_COOKIE['user_id'])):
+    setcookie('user_id', '', time()-7000000, '/');
+  endif;
+  if (isset($_SESSION['user_id']) && isset($_SESSION['user_email']) && isset($_SESSION['account_profile']) && isset($_SESSION['depatment_name'])) { 
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -156,13 +164,13 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle hidden-arrow d-flex align-items-center" href="#"
               id="navbarDropdownMenuLink" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-              <img src="https://mdbootstrap.com/img/Photos/Avatars/img (31).jpg" class="rounded-circle" height="22"
+              <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" class="rounded-circle" height="22"
                 alt="" loading="lazy" />
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="#">My profile</a></li>
+              <li><a class="dropdown-item" href="profile">My profile</a></li>
               <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li><a class="dropdown-item" href="#">Logout</a></li>
+              <li><a class="dropdown-item" href="logout">Logout</a></li>
             </ul>
           </li>
         </ul>
@@ -172,3 +180,9 @@
     <!-- Navbar -->
   </header>
   <!--Main Navigation-->
+
+<?php 
+}else {
+   header("Location: ../School-admin/login");
+}
+ ?>
