@@ -25,6 +25,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
             $user_department = $user['depatment_name'];
             $user_school = $user['school_name'];
             $user_profile = $user['account_profile'];
+            $user_account_status = $user['account_status'];
 
 			if ($email === $user_email) {
 				if (password_verify($password, $user_password)) {
@@ -33,7 +34,8 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 					$_SESSION['user_full_name'] = $user_full_name;
                     $_SESSION['depatment_name'] = $user_department;
                     $_SESSION['school_name'] = $user_school;
-                    $_SESSION['account_profile'] = $user_profile;
+                    $_SESSION['account_status'] = $user_account_status;
+
 					header("Location: /edVoteAdmin/public/School-admin/");
 
 				}else {

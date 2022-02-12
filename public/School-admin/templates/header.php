@@ -3,7 +3,7 @@
   if(isset($_COOKIE['user_id'])):
     setcookie('user_id', '', time()-7000000, '/');
   endif;
-  if (isset($_SESSION['user_id']) && isset($_SESSION['user_email']) && isset($_SESSION['account_profile']) && isset($_SESSION['depatment_name'])) { 
+  if (isset($_SESSION['user_id']) && isset($_SESSION['user_email'])) { 
 ?>
 
 <!DOCTYPE html>

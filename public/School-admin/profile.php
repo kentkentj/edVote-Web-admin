@@ -46,7 +46,7 @@
                         <div class="row pt-1">
                             <div class="col-6 mb-3">
                                 <h6>Status</h6>
-                                <p class="text-muted">Active</p>
+                                <p class="text-muted"><?=$_SESSION['account_status']?></p>
                             </div>
                         </div>
                         <div class="d-flex justify-content-start">
