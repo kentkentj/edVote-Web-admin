@@ -17,6 +17,19 @@ require "../../common.php";
         echo $sql . "<br>" . $error->getMessage();
     }    
 
+    try{
+        $connection=new PDO($dsn, $username, $password, $options);
+    
+        $sql_read_electionevent="SELECT * FROM electionevent ORDER BY election_id DESC";
+    
+        $statement_read = $connection->prepare($sql_read_electionevent);
+        $statement_read->execute();
+        $result_election = $statement_read->fetchAll();
+    
+    } catch(PDOException $error){
+        echo $sql_read_electionevent . "<br>" . $error->getMessage();
+    }
+
  ?> 
 <!--Main layout-->
 <main style="margin-top: 58px">
@@ -48,78 +61,26 @@ require "../../common.php";
                 <thead>
                   <tr>
                     <th scope="col"></th>
-                    <th scope="col">Product Detail Views</th>
-                    <th scope="col">Unique Purchases</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Product Revenue</th>
-                    <th scope="col">Avg. Price</th>
+                    <th scope="col">Available in</th>
+                    <th scope="col">Due</th>
+                    <th scope="col">Department</th>
+                    <th scope="col">School</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
+                <?php foreach ($result_election as $row) : ?>
                   <tr>
-                    <th scope="row">Value</th>
-                    <td>18,492</td>
-                    <td>228</td>
-                    <td>350</td>
-                    <td>$4,787.64</td>
-                    <td>$13.68</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Percentage change</th>
+                    <th scope="row"><?php echo escape($row["election_name"]); ?></th>
+                    <td><?php echo escape($row["start_election_date"]); ?></td>
+                    <td><?php echo escape($row["end_election_date"]); ?></td>
+                    <td><?php echo escape($row["depatment_name"]); ?></td>
+                    <td><?php echo escape($row["school_name"]); ?></td>
                     <td>
-                      <span class="text-danger">
-                        <i class="fas fa-caret-down me-1"></i><span>-48.8%%</span>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="text-success">
-                        <i class="fas fa-caret-up me-1"></i><span>14.0%</span>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="text-success">
-                        <i class="fas fa-caret-up me-1"></i><span>46.4%</span>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="text-success">
-                        <i class="fas fa-caret-up me-1"></i><span>29.6%</span>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="text-danger">
-                        <i class="fas fa-caret-down me-1"></i><span>-11.5%</span>
-                      </span>
+                        <a href="candidates?electionid=<?php echo escape($row["election_id"]); ?>">View</a>
                     </td>
                   </tr>
-                  <tr>
-                    <th scope="row">Absolute change</th>
-                    <td>
-                      <span class="text-danger">
-                        <i class="fas fa-caret-down me-1"></i><span>-17,654</span>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="text-success">
-                        <i class="fas fa-caret-up me-1"></i><span>28</span>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="text-success">
-                        <i class="fas fa-caret-up me-1"></i><span>111</span>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="text-success">
-                        <i class="fas fa-caret-up me-1"></i><span>$1,092.72</span>
-                      </span>
-                    </td>
-                    <td>
-                      <span class="text-danger">
-                        <i class="fas fa-caret-down me-1"></i><span>$-1.78</span>
-                      </span>
-                    </td>
-                  </tr>
+                  <?php endforeach; ?>
                 </tbody>
               </table>
             </div>
