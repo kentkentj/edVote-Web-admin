@@ -1,3 +1,22 @@
+<?php
+/** * Use an HTML form to edit an entry in the * users table. * */
+require "../../config.php";
+require "../../common.php";
+
+    try{
+
+        $connection=new PDO($dsn, $username, $password, $options);
+        $sql="SELECT COUNT(voters_vote_id) AS 'votes', candidate_name, candidate_position,candidate_party ,position_id FROM balot_counting_table  GROUP BY candidate_position ORDER BY position_id";
+    
+        $statement = $connection->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll();
+    
+    } catch(PDOException $error){
+        echo $sql . "<br>" . $error->getMessage();
+    }    
+
+ ?> 
 <!--Main layout-->
 <main style="margin-top: 58px">
     <div class="container pt-4">
@@ -5,7 +24,7 @@
       <section class="mb-4">
         <div class="card">
           <div class="card-header py-3">
-            <h5 class="mb-0 text-center"><strong>Sales</strong></h5>
+            <h5 class="mb-0 text-center"><strong>Election Results</strong></h5>
           </div>
           <div class="card-body">
             <canvas class="my-4 w-100" id="myChart" height="380"></canvas>
@@ -414,3 +433,39 @@
     </div>
   </main>
   <!--Main layout-->
+
+  <script>
+    // Graph
+var ctx = document.getElementById("myChart");
+
+var myChart = new Chart(ctx, {
+  type: "line",
+  data: {
+    labels: [<?php foreach ($result as $row) : ?><?php echo json_encode(escape($row["candidate_name"]) . ' - ' . escape($row["candidate_position"])) . ",";?><?php endforeach; ?>],
+    datasets: [
+      {
+        data: [<?php foreach ($result as $row) : ?><?php echo escape($row["votes"]) . ",";?><?php endforeach; ?>],
+        lineTension: 0,
+        backgroundColor: "transparent",
+        borderColor: "#007bff",
+        borderWidth: 4,
+        pointBackgroundColor: "#007bff",
+      },
+    ],
+  },
+  options: {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: false,
+          },
+        },
+      ],
+    },
+    legend: {
+      display: false,
+    },
+  },
+});
+  </script>
