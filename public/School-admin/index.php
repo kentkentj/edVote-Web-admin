@@ -90,7 +90,7 @@ require "../../common.php";
       <!--Section: Sales Performance KPIs-->
 
       <!--Section: Minimal statistics cards-->
-      <section>
+      <!--<section>
         <div class="row">
           <div class="col-xl-3 col-sm-6 col-12 mb-4">
             <div class="card">
@@ -301,11 +301,11 @@ require "../../common.php";
             </div>
           </div>
         </div>
-      </section>
+      </section>-->
       <!--Section: Minimal statistics cards-->
 
       <!--Section: Statistics with subtitles-->
-      <section>
+      <!--<section>
         <div class="row">
           <div class="col-xl-6 col-md-12 mb-4">
             <div class="card">
@@ -390,7 +390,7 @@ require "../../common.php";
             </div>
           </div>
         </div>
-      </section>
+      </section>-->
       <!--Section: Statistics with subtitles-->
     </div>
   </main>
