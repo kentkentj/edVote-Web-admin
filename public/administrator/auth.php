@@ -29,7 +29,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
             $user_admin_type = $user['admin_type'];
 			if ($email === $user_email) {
 				if (password_verify($password, $user_password)) {
-					if($user_account_status == 'active' && $user_admin_type == 'school'){
+					if($user_account_status == 'active' && $user_admin_type == 'administrator'){
 						$_SESSION['user_id'] = $user_id;
 						$_SESSION['user_email'] = $user_email;
 						$_SESSION['user_full_name'] = $user_full_name;
@@ -38,11 +38,11 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
 						$_SESSION['account_status'] = $user_account_status;
 						$_SESSION['admin_type'] = $user_admin_type;
 						
-						header("Location: /edVoteAdmin/public/School-admin/");
+						header("Location: /edVoteAdmin/public/administrator/");
 					} elseif($user_account_status != 'active'){
 						header("Location: login.php?error= Your account has been deactivated");
-					} elseif($user_admin_type != 'school'){
-						header("Location: login.php?error= Ops! your are not School Admin");
+					} elseif($user_admin_type != 'admin'){
+						header("Location: login.php?error= Ops! your are not System Administrator");
 					} 
 
 				}else {
