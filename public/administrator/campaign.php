@@ -220,7 +220,7 @@ if(isset($_POST["post_campaign"])){
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div class="mr-2">
-                                        <img class="rounded-circle" width="45" src="uploads/profile/<?php echo escape($row["profile_pic"]); ?>" alt="">
+                                        <img class="rounded-circle" width="45" src="http://localhost/edVoteAdmin/public/School-admin/uploads/profile/<?php echo escape($row["profile_pic"]); ?>" alt="">
                                     </div>
                                     <div class="ml-2">
                                         <div class="h5 m-0">@<?php echo escape($row["candidate_name"]); ?></div>
@@ -252,7 +252,7 @@ if(isset($_POST["post_campaign"])){
                             <p class="card-text">
                                 <?php echo escape($row["caption"]); ?>
                             </p>
-                            <img src="uploads/post/<?php echo escape($row["images"]); ?>" class="img-fluid rounded" alt="Wild Landscape" />
+                            <img src="http://localhost/edVoteAdmin/public/administrator/uploads/post/<?php echo escape($row["images"]); ?>" class="img-fluid rounded" alt="Wild Landscape" />
                         </div>
                         <!--<div class="card-footer">
                             <a href="#" class="card-link"><i class="fa fa-gittip"></i> Like</a>

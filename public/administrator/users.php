@@ -98,7 +98,7 @@ if (isset($_GET["deactivate_account"]) && isset($_GET["account_status"])) {
                 </td>
                 <td>
                     <a href="?deactivate_account=<?php echo escape($row["admin_user_id"]); ?>&account_status=<?php echo escape($row["account_status"]); ?>" class="call-btn btn btn-outline-primary btn-floating btn-sm" data-mdb-number="+48000000000" style=""><i class="fas fa-lock"></i></a>
-                    <a href="#" class="message-btn btn ms-2 btn-primary btn-floating btn-sm" data-mdb-email="tiger.nixon@gmail.com" style=""><i class="fas fa-marker"></i></a>
+                    <a href="userprofile?userprofile=<?php echo escape($row["admin_user_id"]); ?>" class="message-btn btn ms-2 btn-primary btn-floating btn-sm" data-mdb-email="tiger.nixon@gmail.com" style=""><i class="fas fa-marker"></i></a>
                 </td>
             </tr>
         <?php endforeach; ?>
