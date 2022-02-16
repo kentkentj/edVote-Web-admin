@@ -30,7 +30,7 @@ else
 try{
 	$connection=new PDO($dsn, $username, $password, $options);
 
-	$sql="SELECT position_id,position_name FROM positiontable WHERE school_id = 'UC-BCF'";
+	$sql="SELECT position_id,position_name FROM positiontable WHERE school_id = 'UC-BCF' GROUP BY position_name";
 
 	$statement = $connection->prepare($sql);
   $statement->execute();

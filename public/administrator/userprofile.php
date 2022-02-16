@@ -8,8 +8,8 @@ if (isset($_POST['submit']))
     try
     {
         $connection = new PDO($dsn, $username, $password, $options);
-        $user = ["id" => $_POST['id'], "full_name" => $_POST['full_name'], "admin_employee_id" => $_POST['admin_employee_id'], "email" => $_POST['email'], "age" => $_POST['age'], "location" => $_POST['location'], "date" => $_POST['date']];
-        $sql = "UPDATE admin_account SET id = :id, firstname = :firstname, lastname = :lastname, email = :email, age = :age, location = :location, date = :date WHERE id = :id";
+        $user = ["admin_user_id" => $_POST['admin_user_id'], "full_name" => $_POST['full_name'], "admin_employee_id" => $_POST['admin_employee_id'], "depatment_name" => $_POST['depatment_name'], "depatment_name_abbreviation" => $_POST['depatment_name_abbreviation'], "school_id" => $_POST['school_id'], "school_name" => $_POST['school_name']];
+        $sql = "UPDATE admin_account SET full_name = :full_name, admin_employee_id = :admin_employee_id, depatment_name = :depatment_name, depatment_name_abbreviation = :depatment_name_abbreviation, school_id = :school_id, school_name = :school_name WHERE admin_user_id = :userprofile";
         $statement = $connection->prepare($sql);
         $statement->execute($user);
     }
