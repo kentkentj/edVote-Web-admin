@@ -1,5 +1,5 @@
 <?php 
-  session_start();
+  //session_start();
   if(isset($_COOKIE['user_id'])):
     setcookie('user_id', '', time()-7000000, '/');
   endif;
@@ -28,6 +28,9 @@
   
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+  
+  <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+  <script src="//cdn.datatables.net/plug-ins/1.10.7/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 </head>
 
 <body>

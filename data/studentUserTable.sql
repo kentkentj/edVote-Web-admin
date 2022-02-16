@@ -1,7 +1,7 @@
 use edVoteDB;
 
 CREATE TABLE studentUserTable ( 
-    user_id VARCHAR(300), 
+    user_password VARCHAR(300), 
     student_id VARCHAR(11),
     department_id INT(11),
     firstname VARCHAR(30) NOT NULL, 

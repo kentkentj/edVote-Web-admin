@@ -20,19 +20,21 @@ if(isset($_POST["create_user"])){
 	try{
 		$connection = new PDO($dsn, $username, $password, $options);
 
+        $dept = explode(",", $_POST['department']);
+
 		$new_user = array(
-            "user_id" => $_POST['user_id'],
+            "user_password" => password_hash($_POST['student_id'], PASSWORD_DEFAULT),
             "student_id"  => $_POST['student_id'],
-            "department_id"       => $_POST['department'],
-            "firstname"  => $_POST['firstname'],
-            "lastname"  => $_POST['lastname'],
-            "middlename"  => $_POST['middlename'],
-            "suffix"  => $_POST['suffix'],
+            "department_id"       => $dept[1],
+            "firstname"  =>  strtoupper($_POST['firstname']),
+            "lastname"  =>  strtoupper($_POST['lastname']),
+            "middlename"  =>  strtoupper($_POST['middlename']),
+            "suffix"  =>  strtoupper($_POST['suffix']),
             "profile_pic"  => '',
             "email"  => $_POST['email'],
             "phonenumber"  => $_POST['number'],
-            "depatment_name"  => $_POST['department'],
-            "department_name_abbreviation"  => $_POST['department'],
+            "depatment_name"  => $dept[2],
+            "department_name_abbreviation"  => $dept[0],
             "school_id"  => 'UC-BCF',
             "school_name"  => 'University of the Cordilleras',
             "course"  => $_POST['course'],
@@ -40,20 +42,65 @@ if(isset($_POST["create_user"])){
             "account_status"  => 'active'
         );
 
-        $sql = sprintf(
+        $sql_users = sprintf(
                 "INSERT INTO %s (%s) values (%s)",
                 "studentusertable",
                 implode(", ", array_keys($new_user)),
                 ":" . implode(", :", array_keys($new_user))
         );
         
-        $statement = $connection->prepare($sql);
+        $statement = $connection->prepare($sql_users);
         $statement->execute($new_user);
 	} catch(PDOException $error) {
         echo $sql . "<br>" . $error->getMessage();
     }
 }
 
+
+//read users
+try{
+	$connection=new PDO($dsn, $username, $password, $options);
+
+	$sql="SELECT * FROM studentusertable";
+
+	$statement = $connection->prepare($sql);
+  	$statement->execute();
+	$result_user = $statement->fetchAll();
+
+} catch(PDOException $error){
+	echo $sql . "<br>" . $error->getMessage();
+}
+
+//deactivate account
+if (isset($_GET["deactivate_account"]) && isset($_GET["account_status"])) {
+    try {
+      $connection = new PDO($dsn, $username, $password, $options);
+  
+      $id = $_GET["deactivate_account"];
+      $status_value = $_GET["account_status"];
+  
+      $sql_status;
+      
+      if($status_value == 'active'){
+        $sql_status = "UPDATE studentusertable SET account_status = 'deactivate' WHERE student_id  = :deactivate_account";
+      }
+      if($status_value == 'deactivate'){
+        $sql_status = "UPDATE studentusertable SET account_status = 'active' WHERE student_id  = :deactivate_account";
+      }
+
+      $statement_status_account = $connection->prepare($sql_status);
+
+      //get ids
+      $statement_status_account->bindValue(':deactivate_account', $id);
+     
+
+      $statement_status_account->execute();
+      $success = "User successfully deleted";
+    } catch(PDOException $error) {
+      echo $sql_status . "<br>" . $error->getMessage();
+    }
+  }
+?>
 ?>
 
 <?php include 'templates/header.php' ?>
@@ -77,9 +124,6 @@ if(isset($_POST["create_user"])){
             <div class="card-body">
                 <h5 class="card-title">User Information</h5>
                 <form method="POST">
-                    <div class="form-outline" hidden> 
-                        <input type="text" id="user_id" class="form-control" name="user_id" />
-                    </div>
                     <!-- 2 column grid layout with text inputs for the first and last names -->
                     <div class="row mb-4">
                         <div class="col my-2">
@@ -155,7 +199,7 @@ if(isset($_POST["create_user"])){
                             <select class="form-select" aria-label="Default select example" name="department">
                                 <option selected disabled>Department</option>
                                 <?php foreach ($result as $row) : ?>
-                                    <option value="<?php echo escape($row["depatment_name_abbreviation"]); ?>"><?php echo escape($row["depatment_name_abbreviation"]); ?></option>
+                                    <option value="<?php echo escape($row["depatment_name_abbreviation"]); ?>,<?php echo escape($row["department_id"]); ?>,<?php echo escape($row["depatment_name"]); ?>"><?php echo escape($row["depatment_name_abbreviation"]); ?></option>
                                 <?php endforeach; ?>   
                             </select>
                         </div>
@@ -190,53 +234,76 @@ if(isset($_POST["create_user"])){
                         </div>
                     </div>
                     <!-- Submit button -->
-                    <div class="row">
-                        <div class="col">
-                            <button type="button" class="btn btn-primary bg-gradient btn-block mb-4" onclick="logout()">BACK</button>
-                        </div>
-                        <div class="col">
-                            <button type="submit" class="btn btn-secondary bg-gradient btn-block mb-4" name="create_user">CREATE USER</button>
-                        </div>
-                    </div>
+                    <button type="submit" class="btn btn-secondary bg-gradient btn-block mb-4" name="create_user">CREATE USER</button>
 
                     <input name="csrf" type="hidden" value="<?php echo escape($_SESSION['csrf']); ?>">
                 </form>
             </div>
         </div>
         
-
-
-        <div id="user_create_email" class="card my-5">
+        <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Signup User Email</h5>
-                <div class="row">
-                    <div class="col my-2">
-                        <!-- Email input -->
-                        <div class="form-outline mb-4">
-                            <input type="email" id="email_verify" class="form-control" />
-                            <label class="form-label" for="email_verify">Email</label>
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Full Name</th>
+                <th>School</th>
+                <th>Department</th>
+                <th>Year</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($result_user as $row) : ?>
+            <tr>
+                <td><?php echo escape($row["student_id"]); ?></td>
+                <td><?php echo escape($row["firstname"]) . " " . escape($row["middlename"]) . " " . escape($row["lastname"]) . " " . escape($row["suffix"]); ?></td>
+                <td><?php echo escape($row["school_name"]); ?></td>
+                <td><?php echo escape($row["department_name_abbreviation"]); ?></td>
+                <td><?php echo escape($row["year_level"]); ?></td>
+                <td>
+                    <?php if(escape($row["account_status"]) == 'active'): ?>
+                        <div class="badge bg-success text-wrap" style="width: 6rem;text-transform:uppercase">
+                            <?php echo escape($row["account_status"]); ?></a>
                         </div>
-                    </div>
-                    <div class="col my-2">
-                        <!-- student-id input -->
-                        <div class="form-outline mb-4">
-                            <input type="email" id="studentid_verify" class="form-control" />
-                            <label class="form-label" for="studentid_verify">Student ID</label>
+                    <?php else: ?>
+                        <div class="badge bg-danger text-wrap" style="width: 6rem;text-transform:uppercase">
+                            <?php echo escape($row["account_status"]); ?>
                         </div>
-                    </div>
-                    <div class="col-sm-5 my-2">
-                        <div class="form-outline">
-                        <button type="button" class="btn btn-secondary bg-gradient btn-block mb-4" onclick="signUP()">ADD USER EMAIL</button>
-                        </div>
-                    </div>
-                </div>
+                     <?php endif; ?>
+                </td>
+                <td>
+                    <a href="?deactivate_account=<?php echo escape($row["student_id"]); ?>&account_status=<?php echo escape($row["account_status"]); ?>" class="call-btn btn btn-outline-primary btn-floating btn-sm" data-mdb-number="+48000000000" style=""><i class="fas fa-lock"></i></a>
+                    <a href="userprofile?userprofile=<?php echo escape($row["student_id"]); ?>" class="message-btn btn ms-2 btn-primary btn-floating btn-sm" data-mdb-email="tiger.nixon@gmail.com" style=""><i class="fas fa-marker"></i></a>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th>Student ID</th>
+                <th>Full Name</th>
+                <th>School</th>
+                <th>Department</th>
+                <th>Year</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </tfoot>
+    </table>
             </div>
         </div>
     </div>
   </main>
 
-
   <script>
+    $(document).ready(function() {
+        $('#example').dataTable();
+    } );
+  </script>
+  <!--<script>
             firebase.auth().onAuthStateChanged(function(user) {
             if (user) {
                 // User is signed in.
@@ -276,6 +343,6 @@ if(isset($_POST["create_user"])){
                 firebase.auth().signOut();
             }
 
-    </script>
+    </script>-->
   <!--Main layout-->
 <?php include 'templates/footer.php' ?>

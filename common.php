@@ -5,7 +5,7 @@
  *
  */
 
-//session_start();
+session_start();
 
 if (empty($_SESSION['csrf'])) {
   if (function_exists('random_bytes')) {
